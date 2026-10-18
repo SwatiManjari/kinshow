@@ -382,7 +382,14 @@ export const MOVIES = [
 export function year(item) { return item.year || (item.release_date || item.first_air_date || '').slice(0, 4) || '—'; }
 export function rating(item) { const v = item.vote_average || item.rating; return v ? (typeof v === 'number' ? v.toFixed(1) : String(v)) : '—'; }
 export function title(item) { return item.title || item.name || 'Untitled'; }
-export function runtime(min) { if (!min) return ''; const n = typeof min === 'string' ? parseInt(min) : min; if (isNaN(n)) return ''; const h = ~~(n / 60), m = n % 60; return h ? `${h}h ${m}m` : `${m}m`; }
+export function runtime(min) {
+  if (!min) return '';
+  const n = typeof min === 'string' ? parseInt(min) : min;
+  if (isNaN(n)) return '';
+  const h = Math.floor(n / 60);
+  const m = n % 60;
+  return h ? `${h}h ${String(m).padStart(2, '0')}m` : `${m}m`;
+}
 
 // Fetch movie poster from OMDb by IMDb ID
 export async function getMoviePoster(imdbId, existingPoster) {
